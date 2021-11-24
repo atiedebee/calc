@@ -21,7 +21,7 @@ int main()
     ERROR_CODE = 0;
     ANS = 0;
     DEGREES = 1;
-    while(readData(&input) == 0)
+    while( (input = readData()) != NULL)
     {   
         statement = stringToStatement(input, BUFFER_SIZE);
         if(statement == NULL){
@@ -31,9 +31,7 @@ int main()
         }
         free(input);
     }
-    free(input);
 //     TODO: something like a readline function but not abysmally slow so that arrow keys can be used
-//     TODO: Use a function pointer array instead of a switch statement
 //     TODO: Fix multiple decimal points not working properly
     return 0;
 }

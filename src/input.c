@@ -5,51 +5,47 @@
 #include "converters.h"
 
 #define COMMAND_LIST_LENGTH 7
-#define NUM_TESTS 12
 
-void test()
+static int test()
 {
-    char *input[NUM_TESTS] = {
-        "2+(2+2)(2-2)\n\0",
-        "2(2+2)(2-2)\n\0",
-        "2(2+2)+(2-2)\n\0",
-        "2((2+2)+(2-2))\n\0",
-        "2((2+2)+(2-2)+2)\n\0",
-        "2+((2+2)+(2-2)+2)\n\0",
-        "2+2^(2+2^2)\n\0",
-        "2+((2+2)*2)(3-(8+2))\n\0",
-        "ans+54+sin(90)*5\n\0",
-        "sqrt(2^4)*2\n\0",
-        "+1-+2\n\0",
-        "2 - - 1\n\0"
-    };
-    double awnsers[NUM_TESTS] = {
-        2.0, 0.0, 8.0, 8.0, 12.0, 8.0, 66.0, -54.0, 5.0, 8.0, -1.0, 3.0
-    };
-    int i;
+    int i = 1;
     struct statement *statement;
+    FILE* testFile;
+    double awnser = 0.0;
+    char input[BUFFER_SIZE];
     
-    LOGS = fopen(".atieCalcLogs.txt", "w+");
-    ANS = 0;
-    for( i = 0; i < NUM_TESTS; i++){
-        fprintf(LOGS, "\n\n-Now parsing %s", input[i]);
-        statement = stringToStatement(input[i], BUFFER_SIZE);
+    testFile = fopen("testCases.txt", "r");
+    if(testFile == NULL){
+        puts("Failed opening file");
+        return 1;
+    }
+    
+    while( fgetc(testFile) != EOF ){
+        fseek(testFile, -1l, SEEK_CUR);
+        fgets(input, BUFFER_SIZE, testFile),
+        fscanf(testFile, "%lf\n\n", &awnser);
+        
+        statement = stringToStatement(input, BUFFER_SIZE);
         
         if(statement == NULL){
             printf("Test[%d] failed, error\n", i);
             errorHandling();
         }
         else{
-            if( awnsers[i] == (ANS = calculate(statement) ) )
+            if( awnser == (ANS = calculate(statement) ) ){
                     printf("Test[%d] succesful\n", i);
-            else
-                printf("Test[%d] failed, expected %lf, got %lf\n", i, awnsers[i], ANS);                
+            }else{
+                printf("Test[%d] failed, expected %lf, got %lf\n", i, awnser, ANS);
+            }
         }
-    }   
+        i += 1;
+    }
+    putchar('\n');//Newline character for the looks
+    return 0;
 }
 
 
-void executeCommand(char* input)
+static void executeCommand(char* input)
 {
     int i = 0;
     char command[16];
@@ -94,7 +90,7 @@ void executeCommand(char* input)
 
 
 //     This code is to remove inconsistensies with the input like capital letters.
-void formatString(char* input)
+static void formatString(char* input)
 {
     int i, j = 0;
     char inputCopy[512];
@@ -124,26 +120,34 @@ void formatString(char* input)
 }
 
 
-int readData(char **input)
+char* readData(void)
 {   
-REREAD_DATA:
-    *input = calloc(BUFFER_SIZE, BUFFER_SIZE);
+    char *input = NULL;
     
-    formatString(*input);
-    
-//     exit command
-    if(*input[0] == 'q' || *input[0] == '\n')
+    while(input == NULL)
     {
-        puts("Quitting\n");
-        return 1;
-    }
-    if(*input[0] == '#')
-    {
-        executeCommand(*input);
-        free(*input);
-        *input = NULL;
-        goto REREAD_DATA; //Yes I'm using a goto, currently don't have anything better. Calling the function recursively could eventually cause a stackoverflow
+        input = calloc(BUFFER_SIZE, BUFFER_SIZE);
+        if(input == NULL){
+            puts("Malloc failed, exiting");
+            return NULL;
+        }
+        
+        formatString(input);
+        
+    //     exit command
+        if(input[0] == 'q' || input[0] == '\n')
+        {
+            puts("Quitting\n");
+            free(input);
+            return NULL;
+        }
+        if(input[0] == '#')
+        {
+            executeCommand(input);
+            free(input);
+            input = NULL;//Sets input to NULL so the loop continues untill a statement is given as input.
+        }
     }
     
-    return 0;
+    return input;
 }

@@ -5,7 +5,6 @@
 
 
 unsigned int ERROR_CODE;
-FILE* LOGS;
 double ANS;
 unsigned int DEGREES;
 

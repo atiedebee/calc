@@ -201,7 +201,6 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
             }
             expectsValue = 0;
         }
-//         TODO: Variable handling + functions like sine + cosine
         
         
         if(!isOperation(input[curChar]) && !isNumber(input[curChar]) && input[curChar] != '(' && input[curChar] != ')' && !isLetter(input[curChar])){

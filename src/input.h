@@ -1,3 +1,1 @@
-void formatString(char* input);
-
-int readData(char **input);
+char* readData(void);

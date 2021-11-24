@@ -5,7 +5,7 @@
 #include "charChecks.h"
 
 // #define DEBUG
-int getStatementLength( struct statement* statement )
+static int getStatementLength( struct statement* statement )
 {
     int size = 0;
     while(statement[size].operator != '\n')
@@ -15,7 +15,7 @@ int getStatementLength( struct statement* statement )
     return size;
 }
 
-double functionOnNumber( double number, int type )
+static double functionOnNumber( double number, int type )
 {//Applies function to an input number
     double (*funcPtrs[8])(double) = {
         sin, cos, tan, asin, acos, atan, sqrt, log10
@@ -29,7 +29,7 @@ double functionOnNumber( double number, int type )
 }
 // TODO: Seperate variables from functions to make it more scalable
 
-double operationOnStatement( double num1, double num2, char operator)
+static double operationOnStatement( double num1, double num2, char operator)
 {
     switch( operator )
     {
@@ -52,19 +52,18 @@ double operationOnStatement( double num1, double num2, char operator)
 
 
 #ifdef DEBUG
-void printStatement(struct statement* statement)
+static void printStatement(struct statement* statement)
 {//Debugging function
-    LOGS = stdout;
     int i;
-        fprintf(LOGS, "place\tnumber\t\toperation\n");
+        printf("place\tnumber\t\toperation\n");
     for(i = 0; statement[i].operator != '\n'; i++)
     {
-        fprintf(LOGS, "%d\t%lf\t'%c'\n", i, statement[i].number, statement[i].operator);
+        printf("%d\t%lf\t'%c'\n", i, statement[i].number, statement[i].operator);
     }
 }
 #endif
 
-void removeStatement(struct statement* statement, int statementtoRemove) //placeInBuffer
+static void removeStatement(struct statement* statement, int statementtoRemove) //placeInBuffer
 {
     int i;
     
