@@ -3,6 +3,7 @@
 
 #include "global_data.h"
 #include "converters.h"
+#include "input.h"
 
 #define COMMAND_LIST_LENGTH 7
 

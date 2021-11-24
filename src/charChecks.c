@@ -1,3 +1,4 @@
+#include "charChecks.h"
 int isNumber(char str)
 {
     if(str >= '0' && str <= '9')

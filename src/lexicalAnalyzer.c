@@ -5,6 +5,8 @@
 
 #include "global_data.h"
 #include "charChecks.h"
+#include "converters.h"
+
 struct statement* stringToStatement(char* input, int MALLOC_SIZE);
 
 static double str_to_num(char* str, int* curChar)

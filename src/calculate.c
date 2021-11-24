@@ -3,6 +3,7 @@
 
 #include "global_data.h"
 #include "charChecks.h"
+#include "converters.h"
 
 // #define DEBUG
 static int getStatementLength( struct statement* statement )
