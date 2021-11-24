@@ -11,8 +11,7 @@ static double str_to_num(char* str, int* curChar)
 {
     double number;
     sscanf(&str[*curChar], "%lf", &number);
-    
-        
+//     possibly change sscanf into a safer option if needed
 //     move curChar to the right while there is a number
     while( (isNumber(str[*curChar]) == 1  ||  (str[*curChar] == ',' || str[*curChar] == '.') ) && str[*curChar+1] != '\0' )
     {
@@ -148,7 +147,6 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
             }
             statement[placeinBuffer].number = str_to_num(input, &curChar);
             expectsValue = 0;
-            
         }
         
         
@@ -208,7 +206,7 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
         
         if(!isOperation(input[curChar]) && !isNumber(input[curChar]) && input[curChar] != '(' && input[curChar] != ')' && !isLetter(input[curChar])){
             curChar++;
-        }
+        }//This should be made shorter in a way
     }
     
     statement[ placeinBuffer+1 ].operator = '\n';

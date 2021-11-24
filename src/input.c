@@ -60,11 +60,11 @@ void executeCommand(char* input)
         "deg",
         "help",
         "test",
-        "\n" //newline character so we can read that memory without a buffer overflow, reason becomes apparent later
+        "\n" //newline character so we can read that memory without a buffer overflow. Yes this is needed
     };
     
     sscanf(input, "#%s", command);
-    
+//     sscanf to be possibly replaced with something safer
     while(strncmp(commandList[i], command, 16) != 0  &&  i < COMMAND_LIST_LENGTH)
     { i++; }
     
@@ -117,8 +117,6 @@ void formatString(char* input)
             input[j] = inputCopy[i];
             j++;
         }
-        
-        
     }
     
     input[BUFFER_SIZE-1] = '\0';

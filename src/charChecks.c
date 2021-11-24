@@ -1,6 +1,5 @@
 int isNumber(char str)
 {
-//     Checks if a character is a number
     if(str >= '0' && str <= '9')
         return 1;
     else
@@ -9,7 +8,6 @@ int isNumber(char str)
 
 int isOperation(char str)
 {
-    //check if char is an operation
     switch (str){
         case '*':
         case '+':
