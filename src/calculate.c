@@ -4,7 +4,7 @@
 #include "global_data.h"
 #include "charChecks.h"
 
-#define DEBUG
+// #define DEBUG
 int getStatementLength( struct statement* statement )
 {
     int size = 0;
@@ -14,19 +14,20 @@ int getStatementLength( struct statement* statement )
     }
     return size;
 }
-// "sin","cos","tan","asin","acos","atan","sqrt",
+
 double functionOnNumber( double number, int type )
-{
+{//Applies function to an input number
     double (*funcPtrs[8])(double) = {
         sin, cos, tan, asin, acos, atan, sqrt, log10
     };
+    
     if(DEGREES == 1 && type <= 5){
         number *= M_PI/180;
     }
     
     return funcPtrs[type](number);
 }
-// TODO: Seperate variables from functions to prevent junk
+// TODO: Seperate variables from functions to make it more scalable
 
 double operationOnStatement( double num1, double num2, char operator)
 {
@@ -52,7 +53,7 @@ double operationOnStatement( double num1, double num2, char operator)
 
 #ifdef DEBUG
 void printStatement(struct statement* statement)
-{
+{//Debugging function
     LOGS = stdout;
     int i;
         fprintf(LOGS, "place\tnumber\t\toperation\n");
@@ -70,10 +71,11 @@ void removeStatement(struct statement* statement, int statementtoRemove) //place
     for( i = statementtoRemove; statement[i].operator != '\n'; i++)
     {
         statement[i].operator = statement[i+1].operator;
-        if( statement[i+1].statement != NULL )
+        if( statement[i+1].statement != NULL ){
             statement[i].statement = statement[i+1].statement;            
-        else
+        }else{
             statement[i].number = statement[i+1].number;
+        }
     }
 }
 
@@ -81,16 +83,18 @@ double calculate(struct statement* statement)
 {
     double result;
     int placeinBuffer;
-        
+    
     for(placeinBuffer = 0; statement[placeinBuffer].operator != '\n'; placeinBuffer++)
     {   
-        if(statement[placeinBuffer].statement != NULL){/// Converts functions to numbers
+        if(statement[placeinBuffer].statement != NULL)
+        {// Converts brackets to numbers, then applies a function to the result if there was a function in there
             statement[placeinBuffer].number = calculate(statement[placeinBuffer].statement);
             statement[placeinBuffer].statement = NULL;
             
-            if(statement[placeinBuffer].type != -1)
+            if(statement[placeinBuffer].type != -1){
                 statement[placeinBuffer].number = functionOnNumber( statement[placeinBuffer].number,
-                                                                    statement[placeinBuffer].type );   
+                                                                    statement[placeinBuffer].type );
+            }
         }
         if(statement[placeinBuffer].isNegative == 1){
             statement[placeinBuffer].number *= -1;
@@ -99,7 +103,7 @@ double calculate(struct statement* statement)
     placeinBuffer = 0; // "Reusing" placeinBuffer.
     
     while( getStatementLength(statement) > 1 )
-    {
+    {//Parses through the input statement to calculate everything in order
         if( getPriority(statement[placeinBuffer].operator) >= getPriority(statement[placeinBuffer+1].operator) )
         {
             statement[placeinBuffer+1].number = operationOnStatement( statement[placeinBuffer].number, 
@@ -107,8 +111,7 @@ double calculate(struct statement* statement)
                                                                       statement[placeinBuffer].operator);
             removeStatement( statement, placeinBuffer );
             placeinBuffer = 0;
-        }
-        else{
+        }else{
             placeinBuffer += 1;
         }
         
