@@ -16,10 +16,16 @@ static int getStatementLength( struct statement* statement )
     return size;
 }
 
+static double absD(double num)
+{
+    return num < 0.0 ? num *= -1 : num;
+}
+
+
 static double functionOnNumber( double number, int type )
 {//Applies function to an input number
-    double (*funcPtrs[8])(double) = {
-        sin, cos, tan, asin, acos, atan, sqrt, log10
+    double (*funcPtrs[11])(double) = {
+        sin, cos, tan, asin, acos, atan, sqrt, log10, ceil, floor, absD
     };
     
     if(DEGREES == 1 && type <= 5){

@@ -63,8 +63,8 @@ static struct statement* movePastBrackets(char* input, int* curChar)
 }
 
 
-#define FUNCTION_AMOUNT 10
-int checkFunction(char* input, struct statement* statement, int* curChar)
+#define FUNCTION_AMOUNT 13
+static int checkFunction(char* input, struct statement* statement, int* curChar)
 {
     int i = 0;
     char function[8];
@@ -78,7 +78,10 @@ int checkFunction(char* input, struct statement* statement, int* curChar)
         "acos",
         "atan",
         "sqrt",
-        "log"
+        "log",
+        "ceil",
+        "floor",
+        "abs"
     };
     sscanf(&input[*curChar], "%8[a-z]", function);
     
