@@ -48,3 +48,8 @@ int getPriority(char c)
             break;
     }
 }
+
+int moveCurChar(char c)
+{
+    return ( isLetter(c) + isOperation(c) + isNumber(c) + (c == ')' || c == '(') ) == 0;
+}// returns 1 if none of these were found

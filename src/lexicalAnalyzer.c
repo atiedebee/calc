@@ -167,7 +167,7 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
         }
         
         
-        if( isOperation(input[curChar]) == 1 )
+        if( isOperation(input[curChar]) )
         {
             if( expectsValue == 2 || (expectsValue == 1 && getPriority(input[curChar]) != 1) ){
                 ERROR_CODE = 0;
@@ -201,10 +201,8 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
             expectsValue = 0;
         }
         
-        
-        if(!isOperation(input[curChar]) && !isNumber(input[curChar]) && input[curChar] != '(' && input[curChar] != ')' && !isLetter(input[curChar])){
-            curChar++;
-        }//This should be made shorter in a way
+        curChar += moveCurChar( input[curChar] );
+//         moveCurChar returns 1 if there is no number, letter, bracket etc.
     }
     
     statement[ placeinBuffer+1 ].operator = '\n';

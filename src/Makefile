@@ -22,6 +22,7 @@ $(OBJS):
 .PHONY: clean all
 clean:
 	rm *.o
+	rm calculator
 all:
 	touch *.c
 	make dev -j4
