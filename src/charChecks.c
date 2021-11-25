@@ -1,15 +1,12 @@
 #include "charChecks.h"
-int isNumber(char str)
+int isNumber(char c)
 {
-    if(str >= '0' && str <= '9')
-        return 1;
-    else
-        return 0;
+    return c >= '0' && c <= '9';
 }
 
-int isOperation(char str)
+int isOperation(char c)
 {
-    switch (str){
+    switch (c){
         case '*':
         case '+':
         case '-':
@@ -22,13 +19,11 @@ int isOperation(char str)
     }
 }
 
-int isLetter(char a)
+int isLetter(char c)
 {
-    if( a >= 'a' &&  a <= 'z' )
-        return 1;
-    else
-        return 0;
+    return c >= 'a' &&  c <= 'z';
 }
+
 int getPriority(char c)
 {
     switch(c)
@@ -53,4 +48,3 @@ int getPriority(char c)
             break;
     }
 }
-// int (*isOperation)(char c) = getPriority;

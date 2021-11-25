@@ -59,10 +59,7 @@ static struct statement* movePastBrackets(char* input, int* curChar)
     statement = stringToStatement(input + startFunc , 256);
 //     TODO: Get proper approximation of malloc size
     
-    if(statement == NULL)
-        return NULL;
-    else
-        return statement;
+    return statement;
 }
 
 
