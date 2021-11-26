@@ -1,1 +1,0 @@
-char* readData(void);
