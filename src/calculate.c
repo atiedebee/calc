@@ -18,7 +18,7 @@ static int getStatementLength( struct statement* statement )
 
 static double absD(double num)
 {
-    return num < 0.0 ? num *= -1 : num;
+    return num < 0.0 ? num * -1 : num;
 }
 
 

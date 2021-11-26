@@ -2,25 +2,27 @@ FILES = main.c charChecks.c lexicalAnalyzer.c calculate.c input.c
 
 OBJS = $(FILES:.c=.o)
 
-# COMPILER = x86_64-w64-mingw32-gcc #crosscompilation to windows
-COMPILER = gcc
-FLAGS = -Wall -Wextra -Werror -pedantic-errors 
+COMPILER = gcc	
+# x86_64-w64-mingw32-gcc
+
+FLAGS = -Wall -Wextra -Werror -pedantic-errors
+OPTIMIZATIONS = -O3
 LIBS = -lm
-EXEC = -o ./calculator
+EXEC = calculator
 
 default:
 	make dev -j4
 
 dev: $(OBJS)
-	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) $(EXEC)
+	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -o $(EXEC)
 
 
 .c.o:
-	$(COMPILER) $(FLAGS) $(LIBS) -c $<  -o $@
+	$(COMPILER) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -c $<  -o $@
 
 $(OBJS):
 
-.PHONY: clean all
+.PHONY: clean all linux windows
 clean:
 	rm *.o calculator calculator.exe -f
 all:

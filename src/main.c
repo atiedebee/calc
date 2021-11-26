@@ -10,6 +10,7 @@ void errorHandling()
     if(ERROR_CODE == 1){
         exit(-1);
     }
+    ERROR_CODE = 0;
 }
 
 int main()
@@ -32,6 +33,5 @@ int main()
         free(input);
     }
 //     TODO: something like a readline function but not abysmally slow so that arrow keys can be used
-//     TODO: Fix multiple decimal points not working properly
     return 0;
 }

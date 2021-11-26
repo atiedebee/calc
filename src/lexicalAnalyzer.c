@@ -12,12 +12,20 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE);
 static double str_to_num(char* str, int* curChar)
 {
     double number;
+    int hasDecimal = 0;
     sscanf(&str[*curChar], "%lf", &number);
 //     possibly change sscanf into a safer option if needed
 //     move curChar to the right while there is a number
-    while( (isNumber(str[*curChar]) == 1  ||  (str[*curChar] == ',' || str[*curChar] == '.') ) && str[*curChar+1] != '\0' )
+    while( isNumber(str[*curChar]) == 1  ||  str[*curChar] == '.' )
     {
+        if(str[*curChar] == '.' ){
+            hasDecimal += 1;
+        }
         *curChar += 1;
+    }
+    if(hasDecimal > 1){
+        ERROR_CODE = 2;
+        puts("Too many decimal points");
     }
     
     return number;
@@ -51,7 +59,6 @@ static struct statement* movePastBrackets(char* input, int* curChar)
     {
         ERROR_CODE = 0;
         puts("Syntax error: No ending bracket\n");
-        
         return NULL;
     }
     
@@ -148,6 +155,10 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
                 return NULL;
             }
             statement[placeinBuffer].number = str_to_num(input, &curChar);
+            if(ERROR_CODE == 2){
+                free(statement);
+                return NULL;
+            }
             expectsValue = 0;
         }
         
