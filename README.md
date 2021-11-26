@@ -10,6 +10,15 @@ Functions like sine (sin) and square root (sqrt) need their arguments in bracket
 > 
 > sin 8 will throw an error.
 
+There's also some commands
+> #deg / #degrees   -   switches to degrees
+
+> #rad / #radiants  -   switches to radiants
+
+> #help             -   shows these commands
+
+> #test             -   runs tests from testCases.txt
+
 # How does it work? (from a code perspective)
 Input is first saved as a string, and later formatted to exclude any spaces to make parsing it easier (as seen in input.c).
 
