@@ -35,7 +35,7 @@ static double str_to_num(char* str, int* curChar)
 static struct statement* movePastBrackets(char* input, int* curChar)
 {
     int startFunc = *curChar + 1; //Makes sure the first opening bracket won't be read when parsing the new string
-    int bracketCount = 1;
+    int size, bracketCount = 1;
     struct statement* statement;
     
     *curChar += 1;
@@ -62,8 +62,8 @@ static struct statement* movePastBrackets(char* input, int* curChar)
         return NULL;
     }
     
-    
-    statement = stringToStatement(input + startFunc , 256);
+    size = 2 + (*curChar-startFunc)/2;
+    statement = stringToStatement(input + startFunc , size);
 //     TODO: Get proper approximation of malloc size
     
     return statement;
@@ -218,6 +218,12 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
         curChar += moveCurChar( input[curChar] );
 //         moveCurChar returns 1 if there is no number, letter, bracket etc.
     }
+    
+    if(expectsValue > 0){
+		ERROR_CODE = 0;
+		puts("Found operator without number behind it");
+		return NULL;
+	}
     
     statement[ placeinBuffer+1 ].operator = '\n';
     return statement;

@@ -22,7 +22,7 @@ dev: $(OBJS)
 
 $(OBJS):
 
-.PHONY: clean all linux windows
+.PHONY: clean all
 clean:
 	rm *.o calculator calculator.exe -f
 all:
