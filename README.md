@@ -2,7 +2,7 @@
 A calculator that suffers from floating precision.
 This calculator suffers from floating point precision and isn't much more than a fun project. I recommend against using it as a calculator. If you have feedback I would love to hear it so I can improve. Makefile uses GCC with a recursive call to itself with the -j4 flag. The calculator is currently 100% terminal based.
 
-# how does it work? (from a user perspective)
+# How does it work? (from a user perspective)
 Run the executable in the terminal, and give it some things to calculate.
 
 Functions like sine (sin) and square root (sqrt) need their arguments in brackets, otherwise the program will throw an error.
