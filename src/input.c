@@ -1,13 +1,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <readline/readline.h>
+
 #include "global_data.h"
 #include "converters.h"
+#include "charChecks.h"
 #include "input.h"
 
 #define COMMAND_LIST_LENGTH 7
 
-static int test()
+static int test(void)
 {
     int i = 1;
     struct statement *statement;
@@ -34,7 +37,7 @@ static int test()
         }
         else{
             if( awnser == (ANS = calculate(statement) ) ){
-                    printf("Test[%d] succesful\n", i);
+                    printf("Test[%d] succesful: %lf\n", i, ANS);
             }else{
                 printf("Test[%d] failed, expected %lf, got %lf\n", i, awnser, ANS);
             }
@@ -42,6 +45,7 @@ static int test()
         i += 1;
     }
     putchar('\n');//Newline character for the looks
+    fclose(testFile);
     return 0;
 }
 
@@ -91,34 +95,37 @@ static void executeCommand(char* input)
 
 
 //     This code is to remove inconsistensies with the input like capital letters.
-static void formatString(char* input)
+static char* formatString(char* input)
 {
     int i, j = 0;
-    char inputCopy[512];
+    char *inputCopy = NULL;
+    int input_len = 0;
     
-    fgets(inputCopy, BUFFER_SIZE, stdin);
-    fflush(stdin);
+    input_len = strlen(input);
+    
+    inputCopy = calloc( input_len+1, sizeof(char) );
     
     
-    for(i = 0; inputCopy[i] != '\0'; i++)
+    for(i = 0; input[i] != '\0'; i++)
     {
-        if(inputCopy[i] == ','){
-            inputCopy[i] = '.';
+        if(input[i] == ','){
+            input[j++] = '.';
         }
         
-        if(inputCopy[i] >= 'A' && inputCopy[i] <= 'Z'){
-            inputCopy[i] += 32;
+        if(input[i] >= 'A' && input[i] <= 'Z'){
+            inputCopy[j++] = input[i] + ('a'-'A');
         }
         
-        if(inputCopy[i] != ' '){
-            input[j] = inputCopy[i];
-            j++;
+        if( !isInvalid(input[i]) || (input[i] >= 'a' && input[i] <= 'z') ){
+            inputCopy[j++] = input[i];
         }
     }
     
-    input[BUFFER_SIZE-1] = '\0';
-    input[BUFFER_SIZE-2] = '\n';
+    inputCopy[j] = '\n';
+    free(input);
+    return inputCopy;
 }
+
 
 
 char* readData(void)
@@ -127,27 +134,23 @@ char* readData(void)
     
     while(input == NULL)
     {
-        input = calloc(BUFFER_SIZE, BUFFER_SIZE);
-        if(input == NULL){
-            puts("Malloc failed, exiting");
-            return NULL;
-        }
+        input = readline("> ");
         
-        formatString(input);
-        
-    //     exit command
-        if(input[0] == 'q' || input[0] == '\n')
-        {
-            puts("Quitting\n");
-            free(input);
-            return NULL;
-        }
         if(input[0] == '#')
         {
             executeCommand(input);
             free(input);
             input = NULL;//Sets input to NULL so the loop continues untill a statement is given as input.
+        }else
+        if(input[0] == 'q' || input[0] == '\n')
+        {
+            puts("Quitting\n");
+            free(input);
+            return NULL;
+        }else{
+            input = formatString(input);
         }
+        
     }
     
     return input;

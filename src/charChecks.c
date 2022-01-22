@@ -1,4 +1,5 @@
 #include "charChecks.h"
+#include "global_data.h"
 int isNumber(char c)
 {
     return c >= '0' && c <= '9';
@@ -49,7 +50,7 @@ int getPriority(char c)
     }
 }
 
-int moveCurChar(char c)
+int isInvalid(char c)
 {
     return ( isLetter(c) + isOperation(c) + isNumber(c) + (c == ')' || c == '(') ) == 0;
 }// returns 1 if none of these were found

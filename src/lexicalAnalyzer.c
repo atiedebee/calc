@@ -215,7 +215,7 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
             expectsValue = 0;
         }
         
-        curChar += moveCurChar( input[curChar] );
+        curChar += isInvalid( input[curChar] );
 //         moveCurChar returns 1 if there is no number, letter, bracket etc.
     }
     

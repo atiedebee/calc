@@ -2,16 +2,15 @@ FILES = main.c charChecks.c lexicalAnalyzer.c calculate.c input.c
 
 OBJS = $(FILES:.c=.o)
 
-COMPILER = gcc	
+COMPILER = gcc
 # x86_64-w64-mingw32-gcc
 
-FLAGS = -Wall -Wextra -Werror -pedantic-errors
-OPTIMIZATIONS = -O2
-LIBS = -lm
+FLAGS = -Wall -Wextra -Werror -pedantic-errors -Wno-unused-variable -Wno-unused-function -Wno-unused-value
+OPTIMIZATIONS = -g
+LIBS = -lm -lncurses -lreadline
 EXEC = calculator
 
-default:
-	make dev -j4
+default:dev
 
 dev: $(OBJS)
 	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -o $(EXEC)
@@ -22,9 +21,9 @@ dev: $(OBJS)
 
 $(OBJS):
 
-.PHONY: clean all linux windows
+.PHONY: clean all
 clean:
-	rm *.o calculator calculator.exe -f
+	rm *.o calculator calculator.exe
 all:
 	touch *.c
 	make dev -j4
