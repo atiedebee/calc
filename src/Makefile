@@ -6,7 +6,7 @@ COMPILER = gcc
 # x86_64-w64-mingw32-gcc
 
 FLAGS = -Wall -Wextra -Werror -pedantic-errors
-OPTIMIZATIONS = -O2
+OPTIMIZATIONS = -Os
 LIBS = -lm
 EXEC = calculator
 
