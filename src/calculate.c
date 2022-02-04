@@ -9,7 +9,7 @@
 static int getStatementLength( struct statement* statement )
 {
     int size = 0;
-    while(statement[size].operator != '\n'){
+    while( statement[size].operator != '\n' ){
         size++;
     }
     return size;
@@ -21,7 +21,7 @@ static double absD(double num)
 }
 
 
-static double functionOnNumber( double number, int type )
+static double functionOnNumber(double number, int type)
 {//Applies function to an input number
     double (*funcPtrs[11])(double) = {
         sin, cos, tan, asin, acos, atan, sqrt, log10, ceil, floor, absD
@@ -35,7 +35,7 @@ static double functionOnNumber( double number, int type )
 }
 // TODO: Seperate variables from functions to make it more scalable
 
-static double operationOnStatement( double num1, double num2, char operator)
+static double operationOnStatement(double num1, double num2, char operator)
 {
     switch( operator )
     {

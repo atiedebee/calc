@@ -6,15 +6,19 @@ COMPILER = gcc
 # x86_64-w64-mingw32-gcc
 
 FLAGS = -Wall -Wextra -Werror -pedantic-errors
-OPTIMIZATIONS = -Os
+OPTIMIZATIONS = -O2
 LIBS = -lm
 EXEC = calculator
 
 default:
-	make dev -j4
+	make dev -j
 
 dev: $(OBJS)
-	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -o $(EXEC)
+	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) -o $(EXEC)
+
+release: $(OBJS)
+	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) -o $(EXEC)
+	make clean
 
 
 bin/%.o: %.c
@@ -27,4 +31,4 @@ clean:
 	rm bin/*.o calculator calculator.exe -f
 all:
 	touch *.c
-	make dev -j4
+	make dev -j

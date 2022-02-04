@@ -17,20 +17,20 @@ void calc_input(char* input)
 
 int main(int argc, char **argv)
 {
-    char *input;
-    puts("\nCurrently this program suffers from floating point inaccuracy.\ntan(90) is not to be trusted\n");
+    char *input = NULL;
     
     ANS = 0;
     DEGREES = 1;
 
     if( argc <= 1 ){
+		puts("\nCurrently this program suffers from floating point inaccuracy.\ntan(90) is not to be trusted\n");
 		while( (input = readData()) != NULL )
 		{
 			calc_input(input);
 			free(input);
 		}
 	}else{
-		
+		formatString(argv[1]);
 		calc_input(argv[1]);
 	}
     

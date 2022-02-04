@@ -4,13 +4,14 @@
 
 #include "global_data.h"
 #include "converters.h"
+#include "charChecks.h"
 #include "input.h"
 
 #define COMMAND_LIST_LENGTH 7
 
-static void formatString(char* input);
+void formatString(char* input);
 
-static int test()
+static int test(void)
 {
     int i = 1;
     struct statement *statement;
@@ -27,8 +28,10 @@ static int test()
     while( fgetc(testFile) != EOF ){
         fseek(testFile, -1l, SEEK_CUR);
         fgets(input, BUFFER_SIZE, testFile),
-        fscanf(testFile, "%lf\n\n", &awnser);
+		formatString(input);
         
+		fscanf(testFile, "%lf\n\n", &awnser);
+		
         statement = stringToStatement(input, BUFFER_SIZE);
         
         if(statement == NULL){
@@ -93,16 +96,15 @@ static void executeCommand(char* input)
 
 
 //     This code is to remove inconsistensies with the input like capital letters.
-static void formatString(char* input)
+void formatString(char* input)
 {
     int i, j = 0;
-    char inputCopy[512];
+    char inputCopy[BUFFER_SIZE] = {0};
     
-    fgets(inputCopy, BUFFER_SIZE, stdin);
-    fflush(stdin);
-    
-    
-    for(i = 0; inputCopy[i] != '\0'; i++)
+	strncpy(inputCopy, input, BUFFER_SIZE);
+	memset(input, 0, sizeof(char) * BUFFER_SIZE);//initialize the string with 0
+	
+    for(i = 0, j = 0; inputCopy[i] != '\0'; i++)
     {
         if( inputCopy[i] == ',' ){
             inputCopy[i] = '.';
@@ -117,11 +119,13 @@ static void formatString(char* input)
             inputCopy[i] += 32;
         }
         
-        if( inputCopy[i] != ' ' ){
+        if( !isWhitespace(inputCopy[i]) ){
             input[j] = inputCopy[i];
-            j++;
+			
+			j++;
         }
     }
+    input[j] = '\n';
     
     input[BUFFER_SIZE-1] = '\0';
     input[BUFFER_SIZE-2] = '\n';
@@ -132,7 +136,7 @@ static void formatString(char* input)
 char* readData(void)
 {   
     char *input = NULL;
-    
+
     while( input == NULL )
     {
         input = calloc(BUFFER_SIZE, BUFFER_SIZE);
@@ -140,6 +144,7 @@ char* readData(void)
             puts("Malloc failed, exiting");
             return NULL;
         }
+		fgets(input, BUFFER_SIZE, stdin);
         
         formatString(input);
         

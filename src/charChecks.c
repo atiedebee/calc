@@ -24,6 +24,10 @@ int isLetter(char c)
     return c >= 'a' &&  c <= 'z';
 }
 
+int isWhitespace(char c){
+	return c == ' ' || c == '\n' || c == '\0' || c == '\t' || c == '\r';
+}
+
 int getPriority(char c)
 {
     switch(c)
@@ -48,6 +52,8 @@ int getPriority(char c)
             break;
     }
 }
+
+
 
 int moveCurChar(char c)
 {

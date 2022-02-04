@@ -2,5 +2,6 @@
 #ifdef INPUT_H
 
 char* readData(void);
+void formatString(char* input);
 
 #endif
