@@ -4,7 +4,6 @@
 #define     VERSION     "0.1"
 
 
-unsigned int ERROR_CODE;
 double ANS;
 unsigned int DEGREES;
 
@@ -21,4 +20,3 @@ struct statement{
 //     Type is the type of function
 };
 
-void errorHandling();

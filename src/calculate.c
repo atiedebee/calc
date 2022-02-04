@@ -9,8 +9,7 @@
 static int getStatementLength( struct statement* statement )
 {
     int size = 0;
-    while(statement[size].operator != '\n')
-    {
+    while(statement[size].operator != '\n'){
         size++;
     }
     return size;
@@ -28,7 +27,7 @@ static double functionOnNumber( double number, int type )
         sin, cos, tan, asin, acos, atan, sqrt, log10, ceil, floor, absD
     };
     
-    if(DEGREES == 1 && type <= 5){
+    if( DEGREES == 1 && type <= 5 ){
         number *= M_PI/180;
     }
     

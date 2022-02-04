@@ -1,6 +1,6 @@
 FILES = main.c charChecks.c lexicalAnalyzer.c calculate.c input.c
 
-OBJS = $(FILES:.c=.o)
+OBJS = $(addprefix bin/, $(FILES:.c=.o) )
 
 COMPILER = gcc	
 # x86_64-w64-mingw32-gcc
@@ -17,14 +17,14 @@ dev: $(OBJS)
 	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -o $(EXEC)
 
 
-.c.o:
+bin/%.o: %.c
 	$(COMPILER) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -c $<  -o $@
 
 $(OBJS):
 
 .PHONY: clean all
 clean:
-	rm *.o calculator calculator.exe -f
+	rm bin/*.o calculator calculator.exe -f
 all:
 	touch *.c
 	make dev -j4

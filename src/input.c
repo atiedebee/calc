@@ -1,11 +1,14 @@
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include "global_data.h"
 #include "converters.h"
 #include "input.h"
 
 #define COMMAND_LIST_LENGTH 7
+
+static void formatString(char* input);
 
 static int test()
 {
@@ -30,7 +33,6 @@ static int test()
         
         if(statement == NULL){
             printf("Test[%d] failed, error\n", i);
-            errorHandling();
         }
         else{
             if( awnser == (ANS = calculate(statement) ) ){
@@ -102,15 +104,20 @@ static void formatString(char* input)
     
     for(i = 0; inputCopy[i] != '\0'; i++)
     {
-        if(inputCopy[i] == ','){
+        if( inputCopy[i] == ',' ){
             inputCopy[i] = '.';
         }
         
-        if(inputCopy[i] >= 'A' && inputCopy[i] <= 'Z'){
+        if( inputCopy[i] == '*' && inputCopy[i+1] == '*' ){
+			inputCopy[++i] = '^';
+		}
+        
+        
+        if( inputCopy[i] >= 'A' && inputCopy[i] <= 'Z' ){
             inputCopy[i] += 32;
         }
         
-        if(inputCopy[i] != ' '){
+        if( inputCopy[i] != ' ' ){
             input[j] = inputCopy[i];
             j++;
         }
@@ -121,11 +128,12 @@ static void formatString(char* input)
 }
 
 
+
 char* readData(void)
 {   
     char *input = NULL;
     
-    while(input == NULL)
+    while( input == NULL )
     {
         input = calloc(BUFFER_SIZE, BUFFER_SIZE);
         if(input == NULL){

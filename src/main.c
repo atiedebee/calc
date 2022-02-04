@@ -5,33 +5,34 @@
 #include "converters.h"
 #include "input.h"
 
-void errorHandling()
+void calc_input(char* input)
 {
-    if(ERROR_CODE == 1){
-        exit(-1);
-    }
-    ERROR_CODE = 0;
+	struct statement *statement;
+	statement = stringToStatement(input, BUFFER_SIZE);
+	if( statement != NULL ){
+		printf("\t%lf\n", (ANS = calculate(statement)) );
+	}
 }
 
-int main()
+
+int main(int argc, char **argv)
 {
     char *input;
-    struct statement *statement;
     puts("\nCurrently this program suffers from floating point inaccuracy.\ntan(90) is not to be trusted\n");
     
-    ERROR_CODE = 0;
     ANS = 0;
     DEGREES = 1;
-    while( (input = readData()) != NULL)
-    {   
-        statement = stringToStatement(input, BUFFER_SIZE);
-        if(statement == NULL){
-            errorHandling();
-        }else{
-            printf("\t%lf\n", ANS = calculate(statement) );
-        }
-        free(input);
-    }
-//     TODO: something like a readline function but not abysmally slow so that arrow keys can be used
+
+    if( argc <= 1 ){
+		while( (input = readData()) != NULL )
+		{
+			calc_input(input);
+			free(input);
+		}
+	}else{
+		
+		calc_input(argv[1]);
+	}
+    
     return 0;
 }

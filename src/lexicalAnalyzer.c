@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 #include <math.h>
 #include <string.h>
-#include <stdlib.h>
 
 #include "global_data.h"
 #include "charChecks.h"
@@ -24,8 +25,8 @@ static double str_to_num(char* str, int* curChar)
         *curChar += 1;
     }
     if(hasDecimal > 1){
-        ERROR_CODE = 2;
         puts("Too many decimal points");
+		return NAN;
     }
     
     return number;
@@ -57,7 +58,6 @@ static struct statement* movePastBrackets(char* input, int* curChar)
     
     if( input[*curChar] == '\0' )
     {
-        ERROR_CODE = 0;
         puts("Syntax error: No ending bracket\n");
         return NULL;
     }
@@ -75,6 +75,7 @@ static int checkFunction(char* input, struct statement* statement, int* curChar)
 {
     int i = 0;
     char function[8];
+
     const char FUNCS[FUNCTION_AMOUNT][8] = {
         "ans",
         "pi",
@@ -90,9 +91,10 @@ static int checkFunction(char* input, struct statement* statement, int* curChar)
         "floor",
         "abs"
     };
-    sscanf(&input[*curChar], "%8[a-z]", function);
     
-    for(i = 0; i < FUNCTION_AMOUNT; i++)
+	sscanf(&input[*curChar], "%8[a-z]", function);
+    
+	for(i = 0; i < FUNCTION_AMOUNT; i++)
     {
         if( strncmp(function, FUNCS[i], 8) == 0 )
         {
@@ -123,7 +125,6 @@ static int checkFunction(char* input, struct statement* statement, int* curChar)
         return 0;
     }
     else{
-        ERROR_CODE = 0;
         printf("Unknown function '%s'\n", function);
         return -1;
     }
@@ -138,27 +139,28 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
     struct statement* statement = calloc(MALLOC_SIZE, sizeof(struct statement) * MALLOC_SIZE);
     
     if(statement == NULL){ 
-        ERROR_CODE = 1;
-        puts("MEMORY ALLOCATION FAILED!\n");
-        return NULL; 
-    }
-
+        puts("MEMORY ALLOCATION FAILED\n");
+		exit(ENOMEM);
+	}
+	
+	
     while( input[curChar] != '\0' && input[curChar] != ')')
     {
         if( isNumber(input[curChar]) )
         {   
             if(statement[placeinBuffer].number != 0 || expectsValue == 0)
             {
-                ERROR_CODE = 0;
                 puts("Syntax error: too many values\n");
                 free(statement);
                 return NULL;
             }
             statement[placeinBuffer].number = str_to_num(input, &curChar);
-            if(ERROR_CODE == 2){
-                free(statement);
-                return NULL;
-            }
+            if( isnan( statement[placeinBuffer].number ) != 0 ){
+				puts("NAN");
+				free(statement);
+				return NULL;
+			}
+
             expectsValue = 0;
         }
         
@@ -184,7 +186,6 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
         if( isOperation(input[curChar]) )
         {
             if( expectsValue == 2 || (expectsValue == 1 && getPriority(input[curChar]) != 1) ){
-                ERROR_CODE = 0;
                 puts("Syntax error: too many operators\n");
                 free(statement);
                 return NULL;
@@ -220,7 +221,6 @@ struct statement* stringToStatement(char* input, int MALLOC_SIZE)
     }
     
     if(expectsValue > 0){
-		ERROR_CODE = 0;
 		puts("Found operator without number behind it");
 		return NULL;
 	}
