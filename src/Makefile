@@ -13,13 +13,15 @@ EXEC = calculator
 default:
 	make dev -j
 
-dev: $(OBJS)
+dev: bin $(OBJS)
 	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) -o $(EXEC)
 
 release: $(OBJS)
 	$(COMPILER) $(OBJS) $(FLAGS) $(LIBS) -o $(EXEC)
 	make clean
 
+bin:
+	mkdir bin
 
 bin/%.o: %.c
 	$(COMPILER) $(FLAGS) $(LIBS) $(OPTIMIZATIONS) -c $<  -o $@
@@ -28,7 +30,8 @@ $(OBJS):
 
 .PHONY: clean all
 clean:
-	rm bin/*.o calculator calculator.exe -f
+	rm -r bin
+	rm calculator calculator.exe -f
 all:
 	touch *.c
 	make dev -j

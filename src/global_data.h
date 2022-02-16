@@ -4,8 +4,8 @@
 #define     VERSION     "0.1"
 
 
-double ANS;
-unsigned int DEGREES;
+extern double ANS;
+extern unsigned int DEGREES;
 
 struct statement{
     double number;

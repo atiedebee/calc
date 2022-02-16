@@ -5,6 +5,11 @@
 #include "converters.h"
 #include "input.h"
 
+
+double ANS;
+unsigned int DEGREES;
+
+
 void calc_input(char* input)
 {
 	struct statement *statement;
